@@ -28,5 +28,7 @@ namespace HotelApi.DTOs
         [Required(ErrorMessage = "Password is required.")]
         [StringLength(255, ErrorMessage = "Password cannot exceed 255 characters.")]
         public string Password { get; set; }
+
+        public string Role { get; set; } = "ADMIN";
     }
 }

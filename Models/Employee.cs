@@ -28,7 +28,7 @@ namespace HotelApi.Models
         public string Password { get; set; }
 
         // Use enum for role
-        public UserRole Role { get; set; }
+        public UserRole Role { get; set; } = UserRole.ADMIN;
 
         // Navigation property for the bookings made by the employee
         public List<Booking> Bookings { get; set; }

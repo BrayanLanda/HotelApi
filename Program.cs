@@ -1,13 +1,28 @@
+using DotNetEnv;
+using HotelApi.Extensions;
+using HotelApi.Middlewares;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//Loading environment variables from the .env file
+Env.Load();
 
-builder.Services.AddControllers();
+// Add services to the container.
+builder.Services.AddIdentityServices(builder.Configuration);
+builder.Services.AddDatabaseConfiguration(builder.Configuration);
+builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddSwaggerServices(); // Agrega Swagger
+
+//builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+//Add custom exception handling middleware.
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -16,9 +31,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 
+app.UseHttpsRedirection();
 app.UseAuthorization();
+app.MapControllers();
+
+app.UseSwaggerServices(); // Configura Swagger
 
 app.MapControllers();
 
