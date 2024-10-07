@@ -30,10 +30,10 @@ namespace HotelApi.Extensions
             services.AddScoped<IUserRepository, UserService>();
             services.AddScoped<IRoomRepository, RoomService>();
             services.AddScoped<IRoomTypeRepository, RoomTypeService>();
-            // services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IBookingRepository, BookingService>();
+            services.AddScoped<IGuestRepository, GuestService>();
             services.AddScoped<IPasswordHasher<Employee>, PasswordHasher<Employee>>();
             // services.AddScoped<DataSeeder>();
-            // services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             // Registrar el GlobalExceptionFilter
             services.AddControllers(options =>

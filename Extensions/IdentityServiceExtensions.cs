@@ -13,8 +13,8 @@ namespace HotelApi.Extensions
         public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration config)
         {
             // Obtener la clave del token desde las variables de entorno
-        var tokenKey = Environment.GetEnvironmentVariable("TOKEN_KEY") 
-                        ?? throw new Exception("TOKEN_KEY not found");
+            var tokenKey = Environment.GetEnvironmentVariable("TOKEN_KEY")
+                            ?? throw new Exception("TOKEN_KEY not found");
 
             // Añadir autenticación JWT
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
