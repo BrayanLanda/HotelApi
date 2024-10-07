@@ -50,13 +50,13 @@ namespace HotelApi.Services
                 Role = Enum.Parse<UserRole>(userRegisterDto.Role, true)
             };
 
-            // Guardar usuario en la base de datos a través del UserRepository
+            // Save user
             await _userRepository.AddUserAsync(newEmployee);
 
-            // Generar token
+            // Create token
             var token = _tokenRepository.CreateToken(newEmployee);
 
-            // Crear y devolver respuesta
+            // create and return
             return new UserAuthResponseDto
             {
                 Username = newEmployee.FirstName,  // Usar el FirstName como nombre de usuario
@@ -67,24 +67,24 @@ namespace HotelApi.Services
 
         public async Task<UserAuthResponseDto> LoginAsync(UserLoginDto userLoginDto)
         {
-            // Buscar usuario por email
+            // Find user by email
             var employee = await _userRepository.GetUserByEmailAsync(userLoginDto.Email);
             if (employee == null)
             {
                 throw new InvalidCredentialsException();
             }
 
-            // Verificar contraseña
+            // Verify password
             var result = _passwordHasher.VerifyHashedPassword(employee, employee.Password, userLoginDto.Password);
             if (result == PasswordVerificationResult.Failed)
             {
                 throw new InvalidCredentialsException();
             }
 
-            // Generar token
+            // Create token
             var token = _tokenRepository.CreateToken(employee);
 
-            // Crear y devolver respuesta
+            // create and return aswer
             return new UserAuthResponseDto
             {
                 Username = employee.FirstName,

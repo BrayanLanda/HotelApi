@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using HotelApi.Errors.Global;
 using HotelApi.Interfaces;
+using HotelApi.Models;
+// using HotelApi.Seeders;
 using HotelApi.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace HotelApi.Extensions
 {
@@ -22,16 +25,14 @@ namespace HotelApi.Extensions
             services.AddCors();
 
             // Registrar los repositorios genéricos
-            // services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-
-
             services.AddScoped<ITokenRepository, TokenService>();
-            // services.AddScoped<IUserRepository, UserRepository>();
-            // services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IAuthRepository, AuthService>();
+            services.AddScoped<IUserRepository, UserService>();
             // services.AddScoped<IProductRepository, ProductRepository>();
             // services.AddScoped<ICategoryRepository, CategoryRepository>();
             // services.AddScoped<IAuthRepository, AuthRepository>();
-            // services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+            services.AddScoped<IPasswordHasher<Employee>, PasswordHasher<Employee>>();
+            // services.AddScoped<DataSeeder>();
             // services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             // Registrar el GlobalExceptionFilter

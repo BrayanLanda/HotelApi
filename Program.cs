@@ -1,6 +1,7 @@
 using DotNetEnv;
 using HotelApi.Extensions;
 using HotelApi.Middlewares;
+// using HotelApi.Seeders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// using (var scope = app.Services.CreateScope())
+// {
+//     var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+//     await seeder.SeedAsync();
+// }
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
