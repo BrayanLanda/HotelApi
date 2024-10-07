@@ -39,5 +39,12 @@ namespace HotelApi.Services
                 OccupiedRooms = occupiedRooms
             };
         }
+
+        public async Task<IEnumerable<Room>> GetOccupiedRoomsAsync()
+        {
+            return await _context.Rooms
+                .Where(r => r.Bookings.Any(b => b.StartDate <= DateTime.Now && b.EndDate >= DateTime.Now))
+                .ToListAsync();
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HotelApi.DTOs;
 using HotelApi.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace HotelApi.Controllers.EmployeeController
 {
@@ -15,6 +16,10 @@ namespace HotelApi.Controllers.EmployeeController
         }
 
         [HttpPost("register")]
+        [SwaggerOperation(
+        Summary = "Register a new employee",
+        Description = "Registers a new employee by providing the necessary details. Returns the created employee information."
+        )]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Tags("auth")]
@@ -31,6 +36,10 @@ namespace HotelApi.Controllers.EmployeeController
         }
 
         [HttpPost("login")]
+        [SwaggerOperation(
+        Summary = "Login an existing user",
+        Description = "Authenticates a user by verifying the provided credentials."
+        )]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Tags("auth")]

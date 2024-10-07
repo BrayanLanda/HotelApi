@@ -10,6 +10,7 @@ namespace HotelApi.Interfaces
     public interface IRoomRepository
     {
         Task<IEnumerable<Room>> GetAvailableRoomsAsync();
+        Task<IEnumerable<Room>> GetOccupiedRoomsAsync();
         Task<RoomStatusDto> GetRoomStatusAsync();
     }
 }

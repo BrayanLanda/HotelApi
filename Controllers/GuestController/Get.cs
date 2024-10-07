@@ -15,13 +15,15 @@ namespace HotelApi.Controllers.GuestController
         {
         }
 
-        
+
         [HttpGet("{id}")]
         [Authorize(Roles = "ADMIN")]
         [SwaggerOperation(
-        Summary = "Creates a new customer",
-        Description = "Adds a new customer to the database.")]
+        Summary = "Retrieve a guest by ID",
+        Description = "Gets the details of a guest by their ID. Requires ADMIN role."
+        )]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Tags("guests")]
         public async Task<IActionResult> GetGuestById(int id)
@@ -33,8 +35,9 @@ namespace HotelApi.Controllers.GuestController
         [HttpGet("search/{keyword}")]
         [Authorize(Roles = "ADMIN")]
         [SwaggerOperation(
-        Summary = "Creates a new customer",
-        Description = "Adds a new customer to the database.")]
+        Summary = "Search guests",
+        Description = "Searches for guests in the database using a keyword. Requires ADMIN role."
+        )]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Tags("guests")]

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HotelApi.DTOs;
 using HotelApi.Interfaces;
 using HotelApi.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -19,14 +20,22 @@ namespace HotelApi.Controllers.GuestController
         [HttpPut("{id}")]
         [Authorize(Roles = "ADMIN")]
         [SwaggerOperation(
-        Summary = "Creates a new customer",
-        Description = "Adds a new customer to the database.")]
+        Summary = "Update a guest",
+        Description = "Updates the details of an existing guest by their ID. Requires ADMIN role."
+        )]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Tags("guests")]
-        public async Task<IActionResult> UpdateGuest(int id, [FromBody] Guest guest)
+        public async Task<IActionResult> UpdateGuest(int id, [FromBody] GuestUpdateDto guestUpdateDto)
         {
-            var updatedGuest = await _guestRepository.UpdateGuestAsync(id, guest);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var updatedGuest = await _guestRepository.UpdateGuestAsync(id, guestUpdateDto);
+
             return Ok(updatedGuest);
         }
     }

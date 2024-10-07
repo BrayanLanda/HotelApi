@@ -33,5 +33,6 @@ namespace HotelApi.Services
             }
             return roomType;
         }
+
     }
 }

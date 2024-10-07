@@ -18,9 +18,11 @@ namespace HotelApi.Controllers.GuestController
         [HttpDelete("{id}")]
         [Authorize(Roles = "ADMIN")]
         [SwaggerOperation(
-        Summary = "Creates a new customer",
-        Description = "Adds a new customer to the database.")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        Summary = "Delete a guest",
+        Description = "Deletes a guest from the database by their ID. Requires ADMIN role."
+        )]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Tags("guests")]
         public async Task<IActionResult> DeleteGuest(int id)
