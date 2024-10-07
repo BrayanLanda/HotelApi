@@ -28,8 +28,8 @@ namespace HotelApi.Extensions
             services.AddScoped<ITokenRepository, TokenService>();
             services.AddScoped<IAuthRepository, AuthService>();
             services.AddScoped<IUserRepository, UserService>();
-            // services.AddScoped<IProductRepository, ProductRepository>();
-            // services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IRoomRepository, RoomService>();
+            services.AddScoped<IRoomTypeRepository, RoomTypeService>();
             // services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IPasswordHasher<Employee>, PasswordHasher<Employee>>();
             // services.AddScoped<DataSeeder>();
