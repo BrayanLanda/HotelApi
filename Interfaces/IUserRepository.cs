@@ -9,5 +9,6 @@ namespace HotelApi.Interfaces
     public interface IUserRepository
     {
         Task<Employee> GetUserByEmailAsync(string email);
+        Task AddUserAsync(Employee user);
     }
 }

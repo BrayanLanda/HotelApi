@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HotelApi.DTOs;
+using HotelApi.Errors.General;
 using HotelApi.Interfaces;
 using HotelApi.Models;
 using Microsoft.AspNetCore.Identity;
@@ -29,61 +30,66 @@ namespace HotelApi.Services
 
         public async Task<UserAuthResponseDto> RegisterAsync(EmployeeDto userRegisterDto)
         {
-            // Verificar si el usuario ya existe
+            // User Already Exists
             var existingUser = await _userRepository.GetUserByEmailAsync(userRegisterDto.Email);
             if (existingUser != null)
             {
                 throw new UserAlreadyExistsException("User", userRegisterDto.Email);
             }
 
-            // Crear nuevo usuario
-            
+            // Add new User/Employee from EmployeeDto a Employee
+            var newEmployee = new Employee
+            {
+                FirstName = userRegisterDto.FirstName,
+                LastName = userRegisterDto.LastName,
+                Email = userRegisterDto.Email,
+                IdentificationNumber = userRegisterDto.IdentificationNumber,
+                // Hasheamos la contraseña
+                Password = _passwordHasher.HashPassword(null, userRegisterDto.Password),
+                // Mapea el role desde el string a la enumeración Role
+                Role = Enum.Parse<UserRole>(userRegisterDto.Role, true)
+            };
 
-            // Mapea el role desde el string a la enumeración Role
-            newUser.Role = Enum.Parse<UserRole>(userRegisterDto.Role, true);
-
-            newUser.PasswordHash = _passwordHasher.HashPassword(newUser, userRegisterDto.Password);
-
-            // Guardar usuario en la base de datos
-            
+            // Guardar usuario en la base de datos a través del UserRepository
+            await _userRepository.AddUserAsync(newEmployee);
 
             // Generar token
-            var token = _tokenRepository.CreateToken(newUser);
+            var token = _tokenRepository.CreateToken(newEmployee);
 
             // Crear y devolver respuesta
             return new UserAuthResponseDto
             {
-                Username = newUser.Username,
+                Username = newEmployee.FirstName,  // Usar el FirstName como nombre de usuario
                 Token = token,
-                Role = newUser.Role.ToString()
+                Role = newEmployee.Role.ToString()
             };
         }
 
         public async Task<UserAuthResponseDto> LoginAsync(UserLoginDto userLoginDto)
         {
             // Buscar usuario por email
-            var user = await _userRepository.GetUserByEmailAsync(userLoginDto.Email);
-            if (user == null)
+            var employee = await _userRepository.GetUserByEmailAsync(userLoginDto.Email);
+            if (employee == null)
             {
                 throw new InvalidCredentialsException();
             }
 
             // Verificar contraseña
-            var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, userLoginDto.Password);
+            var result = _passwordHasher.VerifyHashedPassword(employee, employee.Password, userLoginDto.Password);
             if (result == PasswordVerificationResult.Failed)
             {
                 throw new InvalidCredentialsException();
             }
 
             // Generar token
-            var token = _tokenRepository.CreateToken(user);
+            var token = _tokenRepository.CreateToken(employee);
 
             // Crear y devolver respuesta
             return new UserAuthResponseDto
             {
-                Username = user.FirstName,
+                Username = employee.FirstName,
                 Token = token,
-                Role = user.Role.ToString()
+                Role = employee.Role.ToString()
             };
         }
     }
